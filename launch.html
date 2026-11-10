@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ultimatum: QR File Transfer - Launch</title>
+
+  <!-- index.html stays SEO/trust. This is the "futuristic launch" page. -->
+  <meta name="robots" content="noindex,follow" />
+  <meta name="description" content="Ultimatum Flash — offline local Wi-Fi file transfer with QR pairing. Android ↔ Android and Android ↔ PC. No cloud, no accounts." />
+
+  <style>
+    .app-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  object-fit: contain;
+
+  /* efect premium */
+  box-shadow: 0 0 0 1px rgba(255,255,255,.15),
+              0 8px 20px rgba(0,0,0,.35);
+
+  background: rgba(255,255,255,.06);
+}
+    :root{
+      --bg0:#070A12;
+      --bg1:#0A1020;
+
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.14);
+      --stroke2: rgba(255,255,255,.22);
+
+      --text:#EAF0FF;
+      --muted: rgba(234,240,255,.72);
+      --muted2: rgba(234,240,255,.55);
+
+      --cyan:#4DEBFF;
+      --violet:#8A5CFF;
+      --green:#38F2A6;
+      --warm:#FFB86B;
+
+      --shadow: 0 20px 70px rgba(0,0,0,.55);
+      --radius: 18px;
+
+      /* ORBITAL: tuned smaller + stable center */
+      --orb-size: 420px;       /* module size */
+      --orb-radius: 140px;     /* orbit radius from center */
+      --sat-size: 52px;        /* satellite tile size */
+      --spin-sec: 20s;         /* orbit speed */
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(77,235,255,.14), transparent 55%),
+        radial-gradient(900px 500px at 85% 25%, rgba(138,92,255,.16), transparent 55%),
+        radial-gradient(700px 500px at 40% 95%, rgba(56,242,166,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    .grid{
+      position:fixed; inset:0;
+      pointer-events:none;
+      opacity:.22;
+      background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(900px 600px at 50% 20%, rgba(0,0,0,1), rgba(0,0,0,.08) 70%, transparent 100%);
+    }
+
+    .wrap{ max-width:1120px; margin:0 auto; padding: 26px 16px 70px; }
+
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding: 10px 8px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none; color:var(--text);
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(77,235,255,.85), rgba(138,92,255,.85));
+      box-shadow: 0 10px 30px rgba(77,235,255,.12);
+      position:relative;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:1px;
+      border-radius:11px;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), transparent 55%);
+      opacity:.9;
+    }
+    .brand strong{ font-size:14px; letter-spacing:.4px; }
+    .brand span{ display:block; font-size:12px; color:var(--muted2); margin-top:1px; }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .chip{
+      text-decoration:none; color:var(--muted);
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .chip:hover{
+      transform: translateY(-1px);
+      border-color: var(--stroke2);
+      background: rgba(255,255,255,.06);
+    }
+
+    .hero{
+      margin-top: 26px;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 22px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+
+    .panel{
+      border:1px solid var(--stroke);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .panel:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(500px 220px at 20% 15%, rgba(77,235,255,.18), transparent 60%),
+                  radial-gradient(420px 240px at 85% 25%, rgba(138,92,255,.18), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .panel-inner{ position:relative; padding: 22px; }
+
+    .kicker{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom: 10px; }
+    .tag{
+      font-size: 12px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      letter-spacing:.2px;
+    }
+    .tag.good{ border-color: rgba(56,242,166,.35); color: rgba(56,242,166,.95); background: rgba(56,242,166,.06); }
+    .tag.accent{ border-color: rgba(77,235,255,.35); color: rgba(77,235,255,.95); background: rgba(77,235,255,.06); }
+
+    h1{
+      margin: 6px 0 10px;
+      font-size: clamp(28px, 3.2vw, 42px);
+      line-height: 1.08;
+      letter-spacing: .2px;
+    }
+    .sub{
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 62ch;
+    }
+
+    .ctaRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 16px; }
+    .btn{
+      appearance:none; border:1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 650;
+      letter-spacing:.2px;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex; align-items:center; gap:10px;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: var(--stroke2); background: rgba(255,255,255,.09); }
+    .btn.primary{
+      border-color: rgba(77,235,255,.38);
+      background: linear-gradient(135deg, rgba(77,235,255,.18), rgba(138,92,255,.16));
+    }
+    .btn .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(77,235,255,.12);
+    }
+    .btn.secondary .dot{ background: rgba(255,255,255,.75); box-shadow:none; }
+
+    .mini{
+      margin-top: 14px;
+      color: var(--muted2);
+      font-size: 12px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .mini a{ color: var(--muted); text-decoration:none; border-bottom: 1px dashed rgba(255,255,255,.25); }
+    .mini a:hover{ color: var(--text); border-bottom-color: rgba(255,255,255,.5); }
+
+    .below{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .below{ grid-template-columns: 1fr; }
+    }
+    .card{
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      padding: 14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: radial-gradient(260px 120px at 20% 10%, rgba(77,235,255,.10), transparent 62%),
+                  radial-gradient(220px 120px at 85% 25%, rgba(138,92,255,.10), transparent 58%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .card > div{ position:relative; }
+    .card b{ display:block; font-size: 13px; letter-spacing:.2px; margin-bottom: 6px; }
+    .card p{ margin:0; font-size: 12.8px; color: var(--muted); }
+
+    /* ORBITAL MODULE */
+    .orbital{ min-height: 420px; display:flex; align-items:center; justify-content:center; }
+    .orb-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .orb-title{ display:flex; flex-direction:column; gap: 3px; }
+    .orb-title b{ font-size: 13px; letter-spacing:.2px; }
+    .orb-title span{ font-size: 12px; color: var(--muted2); }
+
+    .pillRow{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .pill{
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+    }
+
+    .orb-wrap{
+      width: var(--orb-size);
+      max-width: 100%;
+      aspect-ratio: 1/1;
+      position: relative;
+      margin: 0 auto;
+      filter: drop-shadow(0 30px 65px rgba(0,0,0,.55));
+    }
+
+    .ringOuter{
+      position:absolute; inset: 6%;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.09);
+      opacity: .9;
+    }
+    .ringInner{
+      position:absolute; inset: 14%;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.06), transparent 64%);
+      opacity: .95;
+    }
+
+    .core{
+      position:absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      width: 48%;
+      aspect-ratio: 1/1;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.20);
+      background:
+        radial-gradient(circle at 35% 25%, rgba(255,255,255,.18), transparent 55%),
+        radial-gradient(circle at 50% 55%, rgba(77,235,255,.16), transparent 62%),
+        radial-gradient(circle at 70% 70%, rgba(138,92,255,.14), transparent 65%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding: 14px;
+      gap: 6px;
+      z-index: 3;
+    }
+    .core b{ font-size: 15px; letter-spacing:.25px; }
+    .core span{ font-size:12px; color: var(--muted); }
+
+    /* CRITICAL FIX:
+       orbit fills the whole wrap, rotates around exact center */
+    .orbit{
+      position:absolute;
+      inset:0;
+      border-radius:999px;
+      transform-origin: 50% 50%;
+      animation: spin var(--spin-sec) linear infinite;
+      z-index: 2;
+    }
+
+    /* Each sat is anchored at center (50/50) then placed by polar transform */
+    .sat{
+      position:absolute;
+      left: 50%;
+      top: 50%;
+      width: var(--sat-size);
+      height: var(--sat-size);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.07);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap: 4px;
+      text-decoration:none;
+      color: var(--text);
+      user-select:none;
+
+      /* PERFECT CIRCLE: */
+      transform:
+        translate(-50%,-50%)
+        rotate(calc(var(--i) * (360deg / var(--n))))
+        translate(var(--orb-radius))
+        rotate(calc(var(--i) * (-360deg / var(--n))));
+    }
+
+    /* hover without breaking geometry */
+    .sat:hover{
+      border-color: rgba(255,255,255,.32);
+      background: rgba(255,255,255,.11);
+      filter: brightness(1.08);
+    }
+
+    .sat .icon{ width: 22px; height: 22px; opacity: .97; }
+    .sat small{
+      font-size: 10px;
+      color: rgba(234,240,255,.72);
+      letter-spacing:.2px;
+    }
+
+    /* Make them look colored like the app (glow + top tint) */
+    .sat.cyan{ box-shadow: 0 0 0 1px rgba(77,235,255,.10), 0 18px 40px rgba(77,235,255,.14); }
+    .sat.violet{ box-shadow: 0 0 0 1px rgba(138,92,255,.10), 0 18px 40px rgba(138,92,255,.14); }
+    .sat.green{ box-shadow: 0 0 0 1px rgba(56,242,166,.10), 0 18px 40px rgba(56,242,166,.14); }
+    .sat.warm{ box-shadow: 0 0 0 1px rgba(255,184,107,.10), 0 18px 40px rgba(255,184,107,.14); }
+
+    .sat.cyan{ background: linear-gradient(180deg, rgba(77,235,255,.12), rgba(255,255,255,.06)); }
+    .sat.violet{ background: linear-gradient(180deg, rgba(138,92,255,.12), rgba(255,255,255,.06)); }
+    .sat.green{ background: linear-gradient(180deg, rgba(56,242,166,.12), rgba(255,255,255,.06)); }
+    .sat.warm{ background: linear-gradient(180deg, rgba(255,184,107,.12), rgba(255,255,255,.06)); }
+
+    @keyframes spin{
+      from{ transform: rotate(0deg); }
+      to{ transform: rotate(360deg); }
+    }
+
+    footer{
+      margin-top: 26px;
+      color: var(--muted2);
+      font-size: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+      padding: 12px 4px 0;
+    }
+    footer a{ color: var(--muted); text-decoration:none; }
+    footer a:hover{ color: var(--text); }
+
+    @media (max-width: 520px){
+      :root{
+        --orb-size: 350px;
+        --orb-radius: 120px;
+        --sat-size: 48px;
+        --spin-sec: 22s;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .orbit{ animation: none !important; }
+      .btn, .chip, .sat{ transition:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grid" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <a class="brand" href="https://play.google.com/store/apps/details?id=com.ultimatum.flashshare" target="_blank" rel="noopener">
+  <img src="./app-icon.png" alt="Ultimatum Flash icon" class="app-icon">
+  <div>
+          <strong>Ultimatum: QR File Transfer</strong>
+          <span>Offline File Transfer</span>
+        </div>
+      </a>
+
+      <div class="nav">
+        <a class="chip" href="./index.html">Docs</a>
+        <a class="chip" href="./privacy.html">Privacy</a>
+        <a class="chip" href="./terms.html">Terms</a>
+        <a class="chip" href="./contact.html">Contact</a>
+      </div>
+    </div>
+
+    <section class="hero">
+      <!-- Left panel -->
+      <div class="panel">
+        <div class="panel-inner">
+          <div class="kicker">
+            <span class="tag accent">Local Wi-Fi</span>
+            <span class="tag">QR pairing</span>
+            <span class="tag good">No cloud</span>
+            <span class="tag">No accounts</span>
+          </div>
+
+          <h1>Send files at local speed. Stay offline. Keep control.</h1>
+          <p class="sub">
+            Ultimatum: QR File Transfer - transfers files directly over your local network -
+            <strong>Android ↔ Android</strong> and <strong>Android ↔ PC</strong>.
+            No uploads. No background syncing. Just fast, private transfers.
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.ultimatum.flashshare" rel="nofollow noopener" target="_blank">
+              <span class="dot" aria-hidden="true"></span>
+              Open on Google Play
+            </a>
+            <a class="btn secondary" href="./index.html">
+              <span class="dot" aria-hidden="true"></span>
+              How it works
+            </a>
+          </div>
+
+          <div class="mini">
+            <span>Tip: For discovery posts, tell people to search:</span>
+            <span><b>offline file transfer android pc</b></span>
+            <a href="./index.html">See documentation</a>
+          </div>
+
+          <div class="below">
+            <div class="card"><div><b>Offline-first</b><p>Transfers happen locally on your Wi-Fi/LAN. No internet required.</p></div></div>
+            <div class="card"><div><b>Fast pairing</b><p>Scan a QR code to connect and start sending in seconds.</p></div></div>
+            <div class="card"><div><b>Privacy by design</b><p>Your files stay under your control. No cloud uploads.</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right orbital panel -->
+      <div class="panel orbital">
+        <div class="panel-inner">
+          <div class="orb-header">
+            <div class="orb-title">
+              <b>Ultimatum: QR File Transfer</b>
+              <span>Offline. Fast. Secure.</span>
+            </div>
+            <div class="pillRow">
+              <span class="pill">Android ↔ Android</span>
+              <span class="pill">Android ↔ PC</span>
+            </div>
+          </div>
+
+          <div class="orb-wrap" style="--n:12;">
+            <div class="ringOuter" aria-hidden="true"></div>
+            <div class="ringInner" aria-hidden="true"></div>
+
+            <div class="core">
+              <b>Downloads</b>
+              <span>WA Hub</span>
+              <span style="opacity:.75;font-size:12px;margin-top:2px;">Orbital shortcuts</span>
+            </div>
+
+            <div class="orbit" aria-hidden="true">
+              <!-- IMPORTANT: anchored at 50/50; perfect rotation around Downloads -->
+              <a class="sat cyan"   style="--i:0"  href="https://play.google.com/store/apps/details?id=com.ultimatum.flashshare" target="_blank" rel="nofollow noopener" title="Google Play">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                <small>Play</small>
+              </a>
+
+              <a class="sat violet" style="--i:1"  href="./privacy.html" title="Privacy Policy">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4v6c0 5-3.5 9-8 8-4.5 1-8-3-8-8V7l8-4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 12l1.7 1.7L15 9.9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <small>Privacy</small>
+              </a>
+
+              <a class="sat green"  style="--i:2"  href="./terms.html" title="Terms">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l3 3v15H7V3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 3v4h4" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 11h6M9 14h6M9 17h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <small>Terms</small>
+              </a>
+
+              <a class="sat warm"  style="--i:3"  href="./contact.html" title="Contact">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+                <small>Support</small>
+              </a>
+
+              <a class="sat cyan"   style="--i:4"  href="./index.html" title="Docs">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M6 4h10a2 2 0 0 1 2 2v14H8a2 2 0 0 0-2 2V4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M6 18h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <small>Docs</small>
+              </a>
+
+              <a class="sat violet" style="--i:5"  href="./index.html#qr" title="QR">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 4h2v2h-2v-2Zm2-4h4v4h-4v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                <small>QR</small>
+              </a>
+
+              <a class="sat green"  style="--i:6"  href="./index.html#lan" title="LAN">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 7a5 5 0 1 0 5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <small>LAN</small>
+              </a>
+
+              <a class="sat warm"  style="--i:7"  href="./index.html#pc" title="Android ↔ PC">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H4V5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 19h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <small>PC</small>
+              </a>
+
+              <a class="sat cyan"   style="--i:8"  href="./index.html#android" title="Android ↔ Android">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M7 7h10v12H7V7Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 4h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <small>Phone</small>
+              </a>
+
+              <a class="sat violet" style="--i:9"  href="./index.html#usecases" title="Use cases">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 2v20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M5 7h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M7 12h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <small>Cases</small>
+              </a>
+
+              <a class="sat green"  style="--i:10" href="./index.html#privacy" title="Privacy">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 3a4 4 0 0 1 4 4v3h1a2 2 0 0 1 2 2v7H5v-7a2 2 0 0 1 2-2h1V7a4 4 0 0 1 4-4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+                <small>Lock</small>
+              </a>
+
+              <a class="sat warm"  style="--i:11" href="./index.html#how" title="How it works">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+                <small>Flow</small>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        <span>© <span id="y"></span> Ultimatum: QR File Transfer</span>
+        <span style="margin-left:10px;opacity:.9;">Local-only transfers. No cloud required.</span>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="./index.html">Docs</a>
+        <a href="./privacy.html">Privacy</a>
+        <a href="./terms.html">Terms</a>
+        <a href="./contact.html">Contact</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
