@@ -1,4 +1,4 @@
-# Ultimatum QR Easy Connect V1 — QA protocol
+# Ultimatum QR Easy Connect V1 - QA protocol
 
 **Status: QA ONLY (2026-11-12), not publicly released.**
 
